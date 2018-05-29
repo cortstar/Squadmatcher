@@ -59,7 +59,7 @@ def matching_message(time):
 
 try:
     with open("token.txt", "r") as token_file:
-        client.run(token_file.readline())
+        client.run(token_file.readline().strip().strip("\n"))
         token_file.close()
 except IOError:
     print("no token file - ensure that a token.txt exists in the directory.")
