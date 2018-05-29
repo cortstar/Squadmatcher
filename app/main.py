@@ -1,6 +1,6 @@
 import discord
 import asyncio
-from app import Squad
+import Squad
 
 opt_in_time = 10
 squad_size_max = 4
@@ -34,6 +34,7 @@ async def on_message(message):
         await asyncio.sleep(1)
 
     cache_msg = discord.utils.get(client.messages, id=msg.id)
+
     players = []
     try:
         reaction = [reaction for reaction in cache_msg.reactions if reaction.emoji == emoji][0]
@@ -42,7 +43,11 @@ async def on_message(message):
         await warn("The reactions were somehow deleted, cancelling match...")
         return
 
-    players = [player.name for player in players[:1]]
+    players = [player.name for player in players]
+
+    if client.user.name in players:
+        players.remove(client.user.name)
+
     await client.edit_message(msg, new_content=Squad.SquadList(players, squad_size_max).toString())
 
 
